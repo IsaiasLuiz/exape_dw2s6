@@ -21,6 +21,8 @@ dependencies {
 	runtimeOnly 'org.apache.derby:derby'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 
 test {
