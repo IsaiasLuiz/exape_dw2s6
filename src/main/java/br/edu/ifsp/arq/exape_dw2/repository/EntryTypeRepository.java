@@ -5,10 +5,14 @@ import br.edu.ifsp.arq.exape_dw2.domain.model.EntryType;
 import br.edu.ifsp.arq.exape_dw2.repository.mapper.EntryTypeRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public class EntryTypeRepository implements CrudRepository<EntryType, Long> {
 
     @Autowired
@@ -33,10 +37,13 @@ public class EntryTypeRepository implements CrudRepository<EntryType, Long> {
 
     @Override
     public EntryType save(EntryType entity) throws SQLException {
-        String query =  "INSERT INTO ENTRY_TYPE(TYPE) VALUES(?)";
-        int rows = jdbcTemplate.update(query, entity.name());
-        if(rows > 0) {
-            return entity;
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("ENTRY_TYPE").usingGeneratedKeyColumns("ENTRY_TYPE_ID");
+        HashMap<String, String> map = new HashMap<>();
+        map.put("TYPE", entity.name());
+        Number id = jdbcInsert.executeAndReturnKey(map);
+        if(id != null) {
+            entity.setId(id.longValue());
         }
         throw new SQLException();
     }

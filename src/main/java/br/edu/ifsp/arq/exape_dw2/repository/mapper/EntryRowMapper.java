@@ -14,7 +14,7 @@ public class EntryRowMapper implements RowMapper<Entry> {
                 .id(rs.getLong("entry_id"))
                 .description(rs.getString("description"))
                 .dueDate(rs.getDate("due_date").toLocalDate())
-                .payDay(rs.getDate("pay_date").toLocalDate())
+                .payDay(rs.getDate("pay_day").toLocalDate())
                 .value(BigDecimal.valueOf(rs.getDouble("value")))
                 .category(
                         Category.builder()
@@ -26,8 +26,8 @@ public class EntryRowMapper implements RowMapper<Entry> {
                 .user(
                         User.builder()
                                 .id(rs.getLong("user_id"))
-                                .username("username")
-                                .password("password")
+                                .username(rs.getString("username"))
+                                .password(rs.getString("password"))
                                 .name(rs.getString("name"))
                                 .mail(rs.getString("mail"))
                                 .role(

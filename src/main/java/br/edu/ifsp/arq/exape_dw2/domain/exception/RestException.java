@@ -1,6 +1,6 @@
 package br.edu.ifsp.arq.exape_dw2.domain.exception;
 
-public abstract class RestException extends RuntimeException {
+public class RestException extends RuntimeException {
 
     public RestException() {
     }

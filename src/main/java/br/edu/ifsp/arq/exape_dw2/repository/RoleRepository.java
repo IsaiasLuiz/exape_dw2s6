@@ -6,9 +6,11 @@ import br.edu.ifsp.arq.exape_dw2.domain.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -35,9 +37,13 @@ public class RoleRepository implements CrudRepository<Role, Long> {
 
     @Override
     public Role save(Role entity) throws SQLException {
-        String query =  "INSERT INTO ROLE(ROLE_NAME) VALUES(?)";
-        int rows = jdbcTemplate.update(query, entity.getName());
-        if(rows > 0) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("ROLE").usingGeneratedKeyColumns("ROLE_ID");
+        HashMap<String, String> map = new HashMap<>();
+        map.put("ROLE_NAME", entity.getName());
+        Number id = jdbcInsert.executeAndReturnKey(map);
+        if(id != null) {
+            entity.setId(id.longValue());
             return entity;
         }
         throw new SQLException();

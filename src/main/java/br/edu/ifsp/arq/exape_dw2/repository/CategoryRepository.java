@@ -4,11 +4,14 @@ import br.edu.ifsp.arq.exape_dw2.domain.exception.NotFoundException;
 import br.edu.ifsp.arq.exape_dw2.domain.model.Category;
 import br.edu.ifsp.arq.exape_dw2.repository.mapper.EntryTypeRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -35,9 +38,13 @@ public class CategoryRepository implements CrudRepository<Category, Long> {
 
     @Override
     public Category save(Category entity) throws SQLException {
-        String query =  "INSERT INTO CATEGORY(CATEGORY_NAME) VALUES(?)";
-        int rows = jdbcTemplate.update(query, entity.getName());
-        if(rows > 0) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("CATEGORY").usingGeneratedKeyColumns("CATEGORY_ID");
+        HashMap<String, String> map = new HashMap<>();
+        map.put("CATEGORY_NAME", entity.getName());
+            Number id = jdbcInsert.executeAndReturnKey(map);
+        if(id != null) {
+            entity.setId(id.longValue());
             return entity;
         }
         throw new SQLException();
@@ -45,7 +52,7 @@ public class CategoryRepository implements CrudRepository<Category, Long> {
 
     @Override
     public Category update(Long id, Category entity) throws SQLException {
-        String query = "UPDATE ENTRY_TYPE SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?";
+        String query = "UPDATE CATEGORY SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?";
         int rows = jdbcTemplate.update(query, entity.getName(), id);
         if(rows > 0) {
             return entity;

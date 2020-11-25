@@ -1,5 +1,6 @@
 package br.edu.ifsp.arq.exape_dw2.controller;
 
+import br.edu.ifsp.arq.exape_dw2.domain.resources.CategoryResource;
 import br.edu.ifsp.arq.exape_dw2.domain.resources.EntryResource;
 import br.edu.ifsp.arq.exape_dw2.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +26,16 @@ public class EntryController {
     }
 
     @PostMapping
-    public EntryResource save(EntryResource resource) {
+    public EntryResource save(@RequestBody EntryResource resource) {
         return entryService.save(resource);
     }
 
-    @PutMapping
-    public EntryResource update(@PathVariable Long id, EntryResource resource) {
-        return entryService.updateById(id, resource);
-    }
-
-    @PatchMapping
-    public EntryResource change(@PathVariable Long id, EntryResource resource) {
+    @PatchMapping("/{id}")
+    public EntryResource change(@PathVariable Long id, @RequestBody EntryResource resource) {
         return entryService.changeById(id, resource);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         entryService.deleteById(id);
     }

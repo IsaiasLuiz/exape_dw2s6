@@ -1,12 +1,13 @@
 package br.edu.ifsp.arq.exape_dw2.domain.resources;
 
-import br.edu.ifsp.arq.exape_dw2.domain.model.Category;
-import br.edu.ifsp.arq.exape_dw2.domain.model.EntryType;
 import br.edu.ifsp.arq.exape_dw2.domain.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,15 +22,21 @@ public class EntryResource {
 
     private String description;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate payDay;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal value;
 
-    private Category category;
+    @JsonProperty("category")
+    private CategoryResource category;
 
-    private EntryType type;
+    private EntryTypeResource type;
 
     private User user;
 

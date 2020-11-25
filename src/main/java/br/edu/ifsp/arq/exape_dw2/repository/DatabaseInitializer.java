@@ -29,7 +29,7 @@ public class DatabaseInitializer {
                 "ENTRY_ID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY, " +
                 "DESCRIPTION VARCHAR(24) NOT NULL, " +
                 "DUE_DATE DATE NOT NULL, " +
-                "DUE_PAY DATE NOT NULL, " +
+                "PAY_DAY DATE NOT NULL, " +
                 "VALUE DOUBLE NOT NULL, " +
                 "CATEGORY_ID INTEGER NOT NULL, " +
                 "USER_ID INTEGER NOT NULL, " +
@@ -90,8 +90,8 @@ public class DatabaseInitializer {
 
     private void insertEntryType() {
         jdbcTemplate.execute("DELETE FROM ENTRY_TYPE");
-        jdbcTemplate.execute("INSERT INTO ENTRY_TYPE (TYPE) VALUES ('RECEITA')");
-        jdbcTemplate.execute("INSERT INTO ENTRY_TYPE (TYPE) VALUES ('DESPESA')");
+        jdbcTemplate.execute("INSERT INTO ENTRY_TYPE (TYPE) VALUES ('RECIPE')");
+        jdbcTemplate.execute("INSERT INTO ENTRY_TYPE (TYPE) VALUES ('EXPENSE')");
         log.info("INSERT ENTRY TYPE DEFAULT");
     }
 

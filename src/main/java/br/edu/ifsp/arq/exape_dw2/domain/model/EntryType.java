@@ -2,7 +2,7 @@ package br.edu.ifsp.arq.exape_dw2.domain.model;
 
 public enum EntryType {
 
-    RECIPE("receita"), EXPENSE("despesa");
+    RECIPE("RECIPE"), EXPENSE("EXPENSE");
 
     private String type;
 
