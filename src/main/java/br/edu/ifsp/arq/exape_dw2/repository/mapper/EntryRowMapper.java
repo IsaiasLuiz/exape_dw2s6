@@ -23,8 +23,8 @@ public class EntryRowMapper implements RowMapper<Entry> {
                                 .build()
                 )
                 .type(EntryType.valueOf(rs.getString("type")))
-                .user(
-                        User.builder()
+                .userEntity(
+                        UserEntity.builder()
                                 .id(rs.getLong("user_id"))
                                 .username(rs.getString("username"))
                                 .password(rs.getString("password"))

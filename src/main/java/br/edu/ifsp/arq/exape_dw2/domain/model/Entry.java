@@ -28,6 +28,6 @@ public class Entry {
 
     private EntryType type;
 
-    private User user;
+    private UserEntity userEntity;
 
 }

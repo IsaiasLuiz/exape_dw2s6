@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
 
     private Long id;
 
@@ -22,5 +22,15 @@ public class User {
     private String mail;
 
     private Role role;
+
+    public UserEntity(UserEntity userEntity) {
+        super();
+        this.id = userEntity.getId();
+        this.username = userEntity.getUsername();
+        this.password = userEntity.getPassword();
+        this.name = userEntity.getName();
+        this.mail = userEntity.getMail();
+        this.role = userEntity.getRole();
+    }
 
 }

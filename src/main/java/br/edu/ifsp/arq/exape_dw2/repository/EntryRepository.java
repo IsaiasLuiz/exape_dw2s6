@@ -4,7 +4,7 @@ import br.edu.ifsp.arq.exape_dw2.domain.exception.NotFoundException;
 import br.edu.ifsp.arq.exape_dw2.domain.model.Category;
 import br.edu.ifsp.arq.exape_dw2.domain.model.Entry;
 import br.edu.ifsp.arq.exape_dw2.domain.model.EntryType;
-import br.edu.ifsp.arq.exape_dw2.domain.model.User;
+import br.edu.ifsp.arq.exape_dw2.domain.model.UserEntity;
 import br.edu.ifsp.arq.exape_dw2.repository.mapper.EntryRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -56,9 +56,9 @@ public class EntryRepository implements CrudRepository<Entry, Long> {
         String query =  "INSERT INTO ENTRY(DESCRIPTION, DUE_DATE, PAY_DATE, VALUE, CATEGORY_ID, ENTRY_TYPE_ID, USER_ID) " +
                 "VALUES(?, ?, ?, ?, ?, ?)";
 
-        User user = entity.getUser();
-        if (user.getId() == null) {
-            user = userRepository.save(entity.getUser());
+        UserEntity userEntity = entity.getUserEntity();
+        if (userEntity.getId() == null) {
+            userEntity = userRepository.save(entity.getUserEntity());
         }
 
         EntryType type = entity.getType();
@@ -83,14 +83,14 @@ public class EntryRepository implements CrudRepository<Entry, Long> {
         map.put("VALUE", entity.getValue().doubleValue());
         map.put("CATEGORY_ID", category.getId());
         map.put("ENTRY_TYPE_ID", type.getId());
-        map.put("USER_ID", user.getId());
+        map.put("USER_ID", userEntity.getId());
 
         Number id = jdbcInsert.executeAndReturnKey(map);
         if(id != null) {
             entity.setId(id.longValue());
             entity.setCategory(category);
             entity.setType(type);
-            entity.setUser(user);
+            entity.setUserEntity(userEntity);
             return entity;
         }
         throw new SQLException();

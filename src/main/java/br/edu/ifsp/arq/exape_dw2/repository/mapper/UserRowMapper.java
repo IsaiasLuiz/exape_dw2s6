@@ -1,16 +1,16 @@
 package br.edu.ifsp.arq.exape_dw2.repository.mapper;
 
 import br.edu.ifsp.arq.exape_dw2.domain.model.Role;
-import br.edu.ifsp.arq.exape_dw2.domain.model.User;
+import br.edu.ifsp.arq.exape_dw2.domain.model.UserEntity;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRowMapper implements RowMapper<User> {
+public class UserRowMapper implements RowMapper<UserEntity> {
     @Override
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return User.builder()
+    public UserEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return UserEntity.builder()
                 .id(rs.getLong("role_id"))
                 .username(rs.getString("username"))
                 .password(rs.getString("password"))

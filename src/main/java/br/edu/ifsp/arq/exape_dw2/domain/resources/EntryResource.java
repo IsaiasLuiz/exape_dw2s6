@@ -1,6 +1,6 @@
 package br.edu.ifsp.arq.exape_dw2.domain.resources;
 
-import br.edu.ifsp.arq.exape_dw2.domain.model.User;
+import br.edu.ifsp.arq.exape_dw2.domain.model.UserEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -38,6 +38,7 @@ public class EntryResource {
 
     private EntryTypeResource type;
 
-    private User user;
+    @JsonProperty("user")
+    private UserResource userResource;
 
 }

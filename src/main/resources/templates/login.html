@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <form th:action="@{/login}" method="POST" class="form-signin">
+        <h2 class="form-signin-heading" th:text="Bem vindo"></h2>
+        <br/>
+
+        <input type="text" id="username" name="username"  placeholder="usuario"
+               class="form-control" /> <br/>
+        <input type="password"  placeholder="senha"
+               id="password" name="password" class="form-control" /> <br />
+
+        <div align="center" th:if="${param.error}">
+            <label style="color: red">Email ou senha invalidos. Favor verificar</label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" name="button" value="Entrar" type="submit">Entrar</button>
+    </form>
+</div>
+</body>
+</html>

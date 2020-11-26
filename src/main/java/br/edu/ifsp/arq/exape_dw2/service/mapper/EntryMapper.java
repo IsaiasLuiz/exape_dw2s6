@@ -3,9 +3,11 @@ package br.edu.ifsp.arq.exape_dw2.service.mapper;
 import br.edu.ifsp.arq.exape_dw2.domain.model.Category;
 import br.edu.ifsp.arq.exape_dw2.domain.model.Entry;
 import br.edu.ifsp.arq.exape_dw2.domain.model.EntryType;
+import br.edu.ifsp.arq.exape_dw2.domain.model.UserEntity;
 import br.edu.ifsp.arq.exape_dw2.domain.resources.CategoryResource;
 import br.edu.ifsp.arq.exape_dw2.domain.resources.EntryResource;
 import br.edu.ifsp.arq.exape_dw2.domain.resources.EntryTypeResource;
+import br.edu.ifsp.arq.exape_dw2.domain.resources.UserResource;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +26,10 @@ public class EntryMapper implements Mapper<Entry, EntryResource> {
                         .name(resource.getCategory().getName())
                         .build())
                 .type(type)
-                .user(resource.getUser())
+                .userEntity(UserEntity.builder()
+                        .id(resource.getUserResource().getId())
+                        .build()
+                )
                 .build();
     }
 
@@ -45,7 +50,10 @@ public class EntryMapper implements Mapper<Entry, EntryResource> {
                         .id(model.getType().getId())
                         .build()
                 )
-                .user(model.getUser())
+                .userResource(UserResource.builder()
+                        .id(model.getUserEntity().getId())
+                        .build()
+                )
                 .build();
     }
 }

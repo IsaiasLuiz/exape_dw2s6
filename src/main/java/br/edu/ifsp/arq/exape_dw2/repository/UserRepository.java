@@ -1,7 +1,7 @@
 package br.edu.ifsp.arq.exape_dw2.repository;
 
 import br.edu.ifsp.arq.exape_dw2.domain.exception.NotFoundException;
-import br.edu.ifsp.arq.exape_dw2.domain.model.User;
+import br.edu.ifsp.arq.exape_dw2.domain.model.UserEntity;
 import br.edu.ifsp.arq.exape_dw2.repository.mapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class UserRepository implements CrudRepository<User, Long>{
+public class UserRepository implements CrudRepository<UserEntity, Long>{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -20,29 +20,39 @@ public class UserRepository implements CrudRepository<User, Long>{
     private RoleRepository roleRepository;
 
     @Override
-    public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM USER JOIN ROLE USING(ROLE_ID)", new UserRowMapper());
+    public List<UserEntity> findAll() {
+        return jdbcTemplate.query("SELECT * FROM USERS JOIN ROLE USING(ROLE_ID)", new UserRowMapper());
     }
 
     @Override
-    public User findById(Long id) {
-        String query = "SELECT * FROM USER JOIN ROLE USING(ROLE_ID) WHERE USER_ID = ?";
-        User user = jdbcTemplate.query(
+    public UserEntity findById(Long id) {
+        String query = "SELECT * FROM USERS JOIN ROLE USING(ROLE_ID) WHERE USER_ID = ?";
+        UserEntity userEntity = jdbcTemplate.query(
                 query, new Object[]{id}, new UserRowMapper()).stream().findFirst().orElse(null);
-        if(user == null) {
+        if(userEntity == null) {
             throw new NotFoundException("Usuario com id " + id + " não encontrado");
         }
-        return user;
+        return userEntity;
+    }
+
+    public UserEntity findByUsernameIgnoreCase(String username) {
+        String query = "SELECT * FROM USERS JOIN ROLE USING(ROLE_ID) WHERE UPPER(USERNAME) = UPPER(?)";
+        UserEntity userEntity = jdbcTemplate.query(
+                query, new Object[]{username}, new UserRowMapper()).stream().findFirst().orElse(null);
+        if(userEntity == null) {
+            throw new NotFoundException("Usuario com username " + username + " não encontrado");
+        }
+        return userEntity;
     }
 
     @Override
-    public User save(User entity) {
+    public UserEntity save(UserEntity entity) {
         return null;
     }
 
     @Override
-    public User update(Long id, User entity) throws SQLException {
-        String query = "UPDATE USER SET USER_ID = ? WHERE USER_ID = ?";
+    public UserEntity update(Long id, UserEntity entity) throws SQLException {
+        String query = "UPDATE USERS SET USER_ID = ? WHERE USER_ID = ?";
         roleRepository.update(entity.getRole().getId(), entity.getRole());
         int rows = jdbcTemplate.update(query, entity.getName(), id);
         if(rows > 0) {
@@ -56,7 +66,7 @@ public class UserRepository implements CrudRepository<User, Long>{
 
     @Override
     public void delete(Long id) throws SQLException {
-        String query = "DELETE FROM USER WHERE USER_ID = ?";
+        String query = "DELETE FROM USERS WHERE USER_ID = ?";
         int rows = jdbcTemplate.update(query, id);
         if(rows == 0) {
             throw new NotFoundException("Usuario com id " + id + " não encontrado");
